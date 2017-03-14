@@ -37,7 +37,8 @@ def search_account(website, username):
     WHERE website=? AND username=?""",
               (website, username))
     data = c.fetchall()
-    data = data[0] if data else []
+    attrs = ["website", "username", "password", "last_used", "create_date"]
+    data = dict(zip(attrs, data[0])) if data else None
     return data
 
 
