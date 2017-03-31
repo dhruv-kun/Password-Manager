@@ -1,6 +1,7 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.5
 
 import Database, AESCipher
+import pyperclip
 
 
 def main():
@@ -12,38 +13,40 @@ def main():
         if choice in ('e', 'E'):
             website = input('Website: ')
             username = input("Username: ")
-            search_res = Database.search_account(website, username)
+            search_res = Database.search_account(web=website, usr=username)
             if search_res:
                 print("Can't encrypt. Account exists.")
             else:
                 key = input("Key: ")
                 password = input("Password: ")
                 password = AESCipher.encrypt(key, password)
-                Database.create_account(website, username, password)
+                Database.create_account(web=website, usr=username, pswd=password)
                 print('Done')
 
         elif choice in ('d', 'D'):
             website = input('Website: ')
             username = input("Username: ")
-            search_res = Database.search_account(website, username)
+            search_res = Database.search_account(web=website, usr=username)
             if search_res:
                 key = input("Key: ")
                 password = search_res['password']
                 password = AESCipher.decrypt(key, password)
                 print("Password:", password)
+                pyperclip.copy(password)
+                print('Password saved to your clipboard.')
             else:
                 print("Can't decrypt. Account doesn't exists.")
 
         elif choice in ('u', 'U'):
             website = input('Website: ')
             username = input("Username: ")
-            search_res = Database.search_account(website, username)
+            search_res = Database.search_account(web=website, usr=username)
             if search_res:
                 new_username = input("New Username: ")
                 new_password = input("New Password: ")
                 key = input("Key: ")
                 new_password = AESCipher.encrypt(key, new_password)
-                Database.update_account(website, username, new_username, new_password)
+                Database.update_account(web=website, usr=username, new_usr=new_username, new_pswd=new_password)
                 print("Done.")
             else:
                 print("Can't update. Account doesn't exists.")
@@ -51,13 +54,13 @@ def main():
         elif choice in ('l', 'L'):
             website = input('Website: ')
             username = input("Username: ")
-            search_res = Database.search_account(website, username)
+            search_res = Database.search_account(web=website, usr=username)
             if search_res:
                 key = input("Key: ")
                 password = input("Enter password to delete account: ")
                 acc_pass = AESCipher.decrypt(key, search_res['password'])
                 if password == acc_pass:
-                    Database.delete_account(website, username)
+                    Database.delete_account(web=website, usr=username)
                     print("Done")
                 else:
                     print("Can't delete account, unauthorized access.")
@@ -66,10 +69,10 @@ def main():
 
         elif choice in ('s', 'S'):
             search_res = Database.show_all()
-            print("{:20} {:20} {:20} {:20}".format("Website", "Username", "Last Used", "Create Date"))
+            print("{:^20} {:^20} {:^20} {:^20}".format("Website", "Username", "Last Used", "Create Date"))
             print('~' * 100)
             for data in search_res:
-                print("{:20} {:20} {:20} {:20}".format(*data))
+                print("{:^20} {:^20} {:^20} {:^20}".format(*data))
             print('~' * 100)
 
         elif choice in ('x', 'X'):
