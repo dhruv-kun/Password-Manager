@@ -49,7 +49,6 @@ def delete_account(web, usr):
     conn.commit()
     return
 
-
 def update_account(web, usr, new_usr, new_pswd):
     curr_date = get_time()
     c.execute("""UPDATE encrypts_storage
