@@ -10,5 +10,6 @@ All the passwords will be encrypted using AES and then saved to SQLite database 
 apt-get install pycrypto
 ```
 > sqlite3
+
 > Must be downloaded manually.
 
