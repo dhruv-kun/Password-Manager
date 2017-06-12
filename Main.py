@@ -1,7 +1,11 @@
 #!/usr/bin/env python3.5
 
 import Database, AESCipher
-import pyperclip
+try:
+    import pyperclip
+except ImportError:
+    print("pyperclip not found.")
+    pyperclip = None
 
 
 def main():
@@ -32,8 +36,9 @@ def main():
                 password = search_res['password']
                 password = AESCipher.decrypt(key, password)
                 print("Password:", password)
-                pyperclip.copy(password)
-                print('Password saved to your clipboard.')
+                if pyperclip:
+                    pyperclip.copy(password)
+                    print('Password saved to your clipboard.')
             else:
                 print("Can't decrypt. Account doesn't exists.")
 
