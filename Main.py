@@ -34,11 +34,14 @@ def main():
             if search_res:
                 key = input("Key: ")
                 password = search_res['password']
-                password = AESCipher.decrypt(key, password)
-                print("Password:", password)
-                if pyperclip:
-                    pyperclip.copy(password)
-                    print('Password saved to your clipboard.')
+                try:
+                    password = AESCipher.decrypt(key, password)
+                    print("Password:", password)
+                    if pyperclip:
+                        pyperclip.copy(password)
+                        print('Password saved to your clipboard.')
+                except Exception:
+                    print('Incorrect Key. Try again.')
             else:
                 print("Can't decrypt. Account doesn't exists.")
 

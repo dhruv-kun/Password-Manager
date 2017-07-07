@@ -8,7 +8,10 @@ def pad(s):
 
 
 def unpad(s):
-    return s.decode('utf-8').strip(' ')
+    try:
+        return s.decode('utf-8').strip(' ')
+    except UnicodeDecodeError:
+        raise Exception("Still bytes. Possibly not decrypted.")
 
 
 def hasher(x):
