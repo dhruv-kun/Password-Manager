@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.5
 
-import Database, AESCipher
+import Database
+import AESCipher
 try:
     import pyperclip
 except ImportError:
@@ -10,7 +11,8 @@ except ImportError:
 
 def main():
     while True:
-        print("(E)ncrypt, (D)ecrypt, (S)how all ids, (U)pdate id, De(l)ete id, E(x)it")
+        print("(E)ncrypt, (D)ecrypt,\
+            (S)how all ids, (U)pdate id, De(l)ete id, E(x)it")
         choice = input('> ')
         Database.create_database()
 
@@ -24,7 +26,8 @@ def main():
                 key = input("Key: ")
                 password = input("Password: ")
                 password = AESCipher.encrypt(key, password)
-                Database.create_account(web=website, usr=username, pswd=password)
+                Database.create_account(
+                    web=website, usr=username, pswd=password)
                 print('Done')
 
         elif choice in ('d', 'D'):
@@ -54,7 +57,9 @@ def main():
                 new_password = input("New Password: ")
                 key = input("Key: ")
                 new_password = AESCipher.encrypt(key, new_password)
-                Database.update_account(web=website, usr=username, new_usr=new_username, new_pswd=new_password)
+                Database.update_account(
+                    web=website, usr=username,
+                    new_usr=new_username, new_pswd=new_password)
                 print("Done.")
             else:
                 print("Can't update. Account doesn't exists.")
@@ -77,7 +82,8 @@ def main():
 
         elif choice in ('s', 'S'):
             search_res = Database.show_all()
-            print("{:^20} {:^20} {:^20} {:^20}".format("Website", "Username", "Last Used", "Create Date"))
+            print("{:^20} {:^20} {:^20} {:^20}".format(
+                "Website", "Username", "Last Used", "Create Date"))
             print('~' * 100)
             for data in search_res:
                 print("{:^20} {:^20} {:^20} {:^20}".format(*data))
@@ -88,5 +94,6 @@ def main():
 
         else:
             print('Invalid Choice.')
+
 
 main()
